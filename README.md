@@ -71,3 +71,10 @@ Backend runs on http://localhost:8000
 - Local-first – works without external APIs for easy testing.
 
 - Extendable – Phase 2 can easily add real-time supervisor interaction.
+
+
+### Run Commands
+```pwsh
+uvicorn main:app --reload
+streamlit run backend/supervisor_dashboard.py
+```
