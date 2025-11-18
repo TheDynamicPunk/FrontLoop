@@ -45,5 +45,5 @@ htmlcov/
 # Miscellaneous
 logs/
 *.log
-*.sqlite3
-*.db
+*.env
+firebase_creds.json
