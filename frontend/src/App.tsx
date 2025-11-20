@@ -8,6 +8,8 @@ import SupervisorDashboard from './components/SupervisorDashboard'
 import axios from 'axios'
 import './App.css'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+
 function AppContent() {
   const [activeTab, setActiveTab] = useState<'customer' | 'supervisor'>('customer')
   const [pendingCount, setPendingCount] = useState(0)
@@ -21,7 +23,7 @@ function AppContent() {
 
   const fetchPendingCount = async () => {
     try {
-      const response = await axios.get('/api/requests')
+      const response = await axios.get(`${API_BASE_URL}/requests`)
       const requests = response.data || []
       const pending = requests.filter((r: any) => r.status === 'pending').length
       setPendingCount(pending)

@@ -4,6 +4,8 @@ import axios from 'axios'
 import { useToast } from '../context/ToastContext'
 import './CustomerChat.css'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+
 interface Message {
   id: string
   sender: 'customer' | 'agent'
@@ -51,7 +53,7 @@ export default function CustomerChat() {
 
     try {
       // Send to backend
-      const response = await axios.post('/api/chat', {
+      const response = await axios.post(`${API_BASE_URL}/api/chat`, {
         message: inputValue,
         customer_name: 'Customer'
       })
