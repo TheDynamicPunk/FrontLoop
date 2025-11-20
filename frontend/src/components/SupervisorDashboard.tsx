@@ -4,6 +4,8 @@ import axios from 'axios'
 import { useToast } from '../context/ToastContext'
 import './SupervisorDashboard.css'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+
 interface HelpRequest {
   id: string
   customer_name: string
@@ -34,7 +36,7 @@ export default function SupervisorDashboard({ onPendingCountChange }: Supervisor
 
   const fetchRequests = async () => {
     try {
-      const response = await axios.get('/api/requests')
+      const response = await axios.get(`${API_BASE_URL}/requests`)
       const requestsData = response.data || []
       setRequests(requestsData)
       
@@ -58,10 +60,10 @@ export default function SupervisorDashboard({ onPendingCountChange }: Supervisor
 
     setLoading(true)
     try {
-      await axios.post(`/api/respond`, {
+      await axios.post(`${API_BASE_URL}/respond`), {
         request_id: selectedRequest.id,
         answer: responseText
-      })
+      }
 
       addToast('success', 'Response sent successfully!')
       setResponseText('')
