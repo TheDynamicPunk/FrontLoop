@@ -1,11 +1,24 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from datetime import datetime
+from fastapi.middleware.cors import CORSMiddleware
 import uuid
 from app.db.firebase_client import db
 from app.db.knowledge_base import add_knowledge, list_knowledge
 
 app = FastAPI(title="FrontLoop Backend")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://frontloop-frontend.onrender.com"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 HELP_REQUESTS_COLLECTION = "help_requests"
 
@@ -75,3 +88,7 @@ def supervisor_respond(response: SupervisorResponse):
 @app.get("/knowledge-base")
 def get_knowledge():
     return list_knowledge()
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
