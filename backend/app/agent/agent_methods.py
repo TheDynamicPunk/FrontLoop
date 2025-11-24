@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 # Hugging Face configuration (for embeddings)
 HF_API_KEY = os.getenv("HF_API_KEY", "")
-KB_MATCH_THRESHOLD = 0.70
+KB_MATCH_THRESHOLD = os.getenv("KB_MATCH_THRESHOLD", 0.59)
 
 # Ollama configuration (for LLM chat only)
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "https://ollama.com")
