@@ -113,7 +113,7 @@
 }
 
 .user-message {
-  justify-content: flex-end;
+  justify-items: right;  
 }
 
 .agent-message {
