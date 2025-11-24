@@ -60,10 +60,10 @@ export default function SupervisorDashboard({ onPendingCountChange }: Supervisor
 
     setLoading(true)
     try {
-      await axios.post(`${API_BASE_URL}/respond`), {
+      await axios.post(`${API_BASE_URL}/respond`, {
         request_id: selectedRequest.id,
         answer: responseText
-      }
+      })
 
       addToast('success', 'Response sent successfully!')
       setResponseText('')

@@ -53,7 +53,7 @@ export default function CustomerChat() {
 
     try {
       // Send to backend
-      const response = await axios.post(`${API_BASE_URL}/api/chat`, {
+      const response = await axios.post(`${API_BASE_URL}/ai-respond`, {
         message: inputValue,
         customer_name: 'Customer'
       })
