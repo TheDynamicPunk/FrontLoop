@@ -1,19 +1,21 @@
 # 🧠 FrontLoop – Human-in-the-Loop AI Supervisor
 
 FrontLoop is a lightweight prototype demonstrating a **human-supervised AI agent system**.  
-When the AI doesn’t know an answer during a customer call, it **escalates to a human supervisor**, follows up automatically, and **learns** from the response.
+When the AI doesn’t know an answer during a customer session, it **escalates to a human supervisor**, follows up automatically, and **learns** from the response.
+
+### Experience [Frontloop](https://frontloop-frontend.onrender.com)
 
 ---
 
 ## Architecture Overview
 
 **Modules:**
-1. **AI Agent (simulated via LiveKit)** – handles incoming calls and triggers help requests.
+1. **AI Agent Functions (uses ollama cloud and hugging face inference model)** – handles incoming messages, processes them and triggers help requests if unknown.
 2. **Backend (FastAPI)** – manages help requests, supervisor responses, and knowledge base updates.
-3. **Frontend (React + Tailwind)** – internal dashboard for supervisors to view and respond to pending requests.
+3. **Frontend (React + Tailwind)** – dashboard for supervisors to view and respond to pending requests.
 
 **Flow:**
-Caller → AI Agent → Help Request → Supervisor UI → Response → Knowledge Base → AI learns
+Client → AI Agent → Help Request → Supervisor UI → Response → Knowledge Base → AI learns
 
 ---
 
@@ -21,11 +23,11 @@ Caller → AI Agent → Help Request → Supervisor UI → Response → Knowledg
 
 | Layer | Tech |
 |-------|------|
-| Backend | FastAPI (Python), Firebase / SQLite |
+| Backend | FastAPI (Python), Firebase |
 | Frontend | React + Tailwind CSS |
-| AI Simulation | LiveKit SDK |
-| DB | Firebase or SQLite (local) |
-| Deployment | Local run (demo-ready) |
+| AI Simulation | Ollama cloud/Hugging Face |
+| DB | Firebase |
+| Deployment | Render free tier |
 
 ---
 
@@ -52,7 +54,12 @@ Backend runs on http://localhost:8000
 
 ## Key Features
 
-- AI escalation flow (simulated call → help request)
+- LLM as a router implementation (LLM categorises user query into small_talk, business_query, supervisor_needed)
+
+- Route based on category
+  - small_talk - LLM answers based on system prompt
+  - business_query - Run HF embedding model → find in knowledge base → if present return else escalate to supervisor
+  - supervisor_needed - Directly escalate to supervisor (human in the loop)
 
 - Supervisor dashboard (view/respond requests)
 
@@ -61,20 +68,3 @@ Backend runs on http://localhost:8000
 - Lifecycle tracking: Pending → Resolved / Unresolved
 
 - Timeout handling and logs
-
-## Design Decisions
-
-- Decoupled services – allows easy scaling and maintainability.
-
-- Simple data model – designed for clarity and traceability.
-
-- Local-first – works without external APIs for easy testing.
-
-- Extendable – Phase 2 can easily add real-time supervisor interaction.
-
-
-### Run Commands
-```pwsh
-uvicorn main:app --reload
-streamlit run backend/supervisor_dashboard.py
-```
