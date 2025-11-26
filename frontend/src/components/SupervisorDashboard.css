@@ -107,6 +107,21 @@
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
 }
 
+.delete-btn {
+  background: transparent;
+  border: transparent;
+  color: var(--accent-danger);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: color 0.3s ease;
+}
+
+.delete-btn:hover {
+  color: var(--accent-danger);
+  background: rgba(207, 42, 42, 0.445);
+}
+
 .requests-scroll {
   flex: 1;
   overflow-y: auto;

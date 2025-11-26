@@ -26,3 +26,7 @@ def create_help_request(data: dict):
 def update_help_request(id: str, data: dict):
     doc_ref = db.collection(HELP_REQUESTS_COLLECTION).document(id)
     doc_ref.update(data)
+
+def delete_help_request(id: str):
+    doc_ref = db.collection(HELP_REQUESTS_COLLECTION).document(id)
+    doc_ref.delete()
