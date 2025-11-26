@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Send, CheckCircle, Clock, AlertCircle } from 'lucide-react'
+import { Send, CheckCircle, Clock, AlertCircle, Trash } from 'lucide-react'
 import axios from 'axios'
 import { useToast } from '../context/ToastContext'
 import './SupervisorDashboard.css'
@@ -121,6 +121,23 @@ export default function SupervisorDashboard({ onPendingCountChange }: Supervisor
 
   const filteredRequests = getFilteredRequests()
 
+  const deleteRequest = async (requestId: string) => {
+    try {
+      await axios.delete(`${API_BASE_URL}/help-request/${requestId}`)
+      addToast('success', 'Help request deleted successfully!')
+      if (selectedRequest?.id === requestId) {
+        setSelectedRequest(null)
+      }
+      await fetchRequests()
+    } catch (error) {
+      console.error('Error deleting request:', error)
+      const errorMsg = axios.isAxiosError(error)  
+        ? error.response?.data?.detail || error.message
+        : 'Failed to delete request'
+      addToast('error', `Error: ${errorMsg}`)
+    }
+  }
+
   return (
     <div className="supervisor-container">
       <div className="supervisor-layout">
@@ -165,6 +182,18 @@ export default function SupervisorDashboard({ onPendingCountChange }: Supervisor
                   <span className="request-time">
                     {new Date(request.created_at).toLocaleTimeString()}
                   </span>
+                  <div style={{ "display" : "flex", "justifyContent" : "flex-end"}}>
+                  <button
+                    className="delete-btn"
+                    onClick={async (e) => {
+                      deleteRequest(request.id)
+                      setSelectedRequest(null)
+                      e.stopPropagation()
+                    }}
+                  >
+                    <Trash size={16} />
+                  </button>
+                  </div>
                 </div>
               ))
             )}

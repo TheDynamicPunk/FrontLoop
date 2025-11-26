@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uuid
 import logging
 from dotenv import load_dotenv
-from app.db.help_requests import create_help_request, get_request_by_status, get_requests_by_id, update_help_request
+from app.db.help_requests import create_help_request, delete_help_request, get_request_by_status, get_requests_by_id, update_help_request
 from app.db.knowledge_base import add_knowledge, list_knowledge, update_embedding
 from app.agent.agent_methods import classify_user_message, find_kb_match, generate_small_talk_response, get_hf_embedding
 
@@ -168,7 +168,13 @@ def ai_respond(msg: ChatMessage, background_tasks: BackgroundTasks):
     except Exception as e:
         logger.error(f"AI respond error: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
-
+    
+@app.delete("/help-request/{request_id}")
+def del_help_request(request_id: str):
+    """Delete a help request by ID"""
+    delete_help_request(request_id)
+    logger.info(f"Help request deleted: {request_id}")
+    return {"status": "deleted", "request_id": request_id}
 
 @app.get("/health")
 def health_check():
